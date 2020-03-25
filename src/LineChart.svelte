@@ -83,7 +83,7 @@ $: {
 
 </script>
 
-<div style="flex-grow: 1">
+<div style="flex-grow: 1; margin-bottom: 4em;">
 
 <div class="chart-filters">
     <wired-input class="search-input" bind:this={filter} placeholder="Search" on:input={onSearch}></wired-input>
