@@ -19,6 +19,7 @@
   "dependencies": {
     "@sveltejs/pancake": "0.0.13",
     "sirv-cli": "^0.4.4",
+    "wired-button": "^2.0.2",
     "wired-card": "^2.0.2",
     "wired-input": "^2.0.2",
     "wired-link": "^2.0.2",
