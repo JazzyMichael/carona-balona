@@ -102,19 +102,28 @@
 
 <div class="header">
 	<h2>🍺 Carona Virus 🤢</h2>
-	<wired-card elevation="3" style="padding: 1em 1.5em">
-		<h3>Confirmed Cases: {totalConfirmed}</h3>
-		<h3>Deaths: {totalDeaths}</h3>
-		<p>Last Updated: {new Date(+x2 * 1000).toLocaleString('en').split(',')[0]}</p>
+	<p style="font-size: 0.9em">Last Updated: {new Date(+x2 * 1000).toLocaleString('en').split(',')[0]}</p>
+
+	<wired-card elevation="3" fill="#1a83e6" style="padding: 2em">
+		<span style="color: white">{totalConfirmed} Cases</span>
+	</wired-card>
+
+	<wired-card elevation="3" fill="#ff3e00" style="padding: 2em">
+		<span style="color: white">{totalDeaths} Deaths</span>
 	</wired-card>
 </div>
 
-<p style="text-align: center; margin-bottom: 0; color: gray;">Zoom</p>
-<wired-slider style="display: block; margin: 0 auto 1em;" value="0" min={minRange} max={maxRange} bind:this={range} on:change={handleSlide}></wired-slider>
+<div style="display: flex; justify-content: space-around; align-items: center; width: 95%; max-width: 666px; margin: 1em auto; flex-wrap: wrap;">
+	<div>
+		<p style="text-align: center; margin-bottom: 0; color: gray;">Zoom</p>
+		<wired-slider style="display: block; margin: 0 auto 1em;" value="0" min={minRange} max={maxRange} bind:this={range} on:change={handleSlide}></wired-slider>
+	</div>
+	<wired-input class="input" type="text" bind:this={filter} placeholder="Filter" on:input={handleFilter}></wired-input>
+</div>
 
-<wired-input class="input" type="text" bind:this={filter} placeholder="Filter" on:input={handleFilter}></wired-input>
+<h3 style="margin-left: 2em">Countries</h3>
 
-<wired-card elevation="3" style="width: 100%; box-sizing: border-box;">
+<wired-card elevation="3" style="width: 95%; box-sizing: border-box; display: block; margin: auto;">
 	<div class="chart">
 		<Pancake.Chart {x1} {x2} y1={y1} y2={y2}>
 			<Pancake.Grid horizontal count={6} let:value>
@@ -156,14 +165,14 @@
 </wired-card>
 
 <wired-card elevation="3" style="margin: 4em auto; text-align: center;">
-	<p>*Data comes from the Novel Coronavirus COVID-19 Data Repository by Johns Hopkins Center for Systems Science and Engineering. It is then cleansed and converted to JSON using an open-source project developed by <wired-link href="https://https://pomb.us/" target="_blank">"Pomber"</wired-link> before being interpretted by this Svelte App! Source code coming soon.</p>
+	<p>*Data comes from the Novel Coronavirus COVID-19 Data Repository by Johns Hopkins Center for Systems Science and Engineering. It is then cleansed and converted to JSON using an open-source project developed by <wired-link href="https://pomb.us/" target="_blank">"Pomber"</wired-link> before being interpretted by this Svelte App! Source code coming soon.</p>
 	<p><wired-link href="https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6" target="_blank">Click Here</wired-link> to view the official Johns Hopkins Dashboard.</p>
 </wired-card>
 
 <style>
 	.header {
 		text-align: center;
-		margin: 1em auto 2em;
+		margin: 1em auto 3em;
 	}
 
 	h2 {
