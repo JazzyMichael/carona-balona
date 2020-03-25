@@ -114,7 +114,7 @@
 
 <wired-input class="input" type="text" bind:this={filter} placeholder="Filter" on:input={handleFilter}></wired-input>
 <br>
-<wired-card elevation="3" style="width: 100%; box-sizing: border-box; max-width: 1234px; margin: auto;">
+<wired-card elevation="3" style="width: 100%; box-sizing: border-box;">
 <div class="chart">
 	<Pancake.Chart {x1} {x2} y1={y1} y2={y2}>
 		<Pancake.Grid horizontal count={6} let:value>
