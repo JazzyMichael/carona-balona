@@ -108,51 +108,51 @@
 		<p>Last Updated: {new Date(+x2 * 1000).toLocaleString('en').split(',')[0]}</p>
 	</wired-card>
 </div>
-<br>
+
 <p style="text-align: center; margin-bottom: 0; color: gray;">Zoom</p>
 <wired-slider style="display: block; margin: 0 auto 1em;" value="0" min={minRange} max={maxRange} bind:this={range} on:change={handleSlide}></wired-slider>
 
 <wired-input class="input" type="text" bind:this={filter} placeholder="Filter" on:input={handleFilter}></wired-input>
-<br>
+
 <wired-card elevation="3" style="width: 100%; box-sizing: border-box;">
-<div class="chart">
-	<Pancake.Chart {x1} {x2} y1={y1} y2={y2}>
-		<Pancake.Grid horizontal count={6} let:value>
-			<div class="grid-line horizontal"><span>{value}</span></div>
-		</Pancake.Grid>
+	<div class="chart">
+		<Pancake.Chart {x1} {x2} y1={y1} y2={y2}>
+			<Pancake.Grid horizontal count={6} let:value>
+				<div class="grid-line horizontal"><span>{value}</span></div>
+			</Pancake.Grid>
 
-		<Pancake.Grid vertical count={3} let:value>
-			<span class="x-label">{new Date(+value * 1000).toLocaleString('en', { month: 'long' })}</span>
-		</Pancake.Grid>
+			<Pancake.Grid vertical count={3} let:value>
+				<span class="x-label">{new Date(+value * 1000).toLocaleString('en', { month: 'long' })}</span>
+			</Pancake.Grid>
 
-		<Pancake.Svg>
-			{#each filtered as country}
-				<Pancake.SvgLine data={country.data} let:d>
-					<path class="data" {d}></path>
-				</Pancake.SvgLine>
-			{/each}
+			<Pancake.Svg>
+				{#each filtered as country}
+					<Pancake.SvgLine data={country.data} let:d>
+						<path class="data" {d}></path>
+					</Pancake.SvgLine>
+				{/each}
+
+				{#if closest}
+					<Pancake.SvgLine data={closest.country.data} let:d>
+						<path class="highlight" {d}></path>
+					</Pancake.SvgLine>
+				{/if}
+			</Pancake.Svg>
 
 			{#if closest}
-				<Pancake.SvgLine data={closest.country.data} let:d>
-					<path class="highlight" {d}></path>
-				</Pancake.SvgLine>
+				<Pancake.Point x={closest.x} y={closest.y}>
+					<span class="annotation-point"></span>
+					<div class="annotation" style="transform: translate(-{100 * ((closest.x - x1) / (x2 - x1))}%,0)">
+						<strong>{closest.country.name}</strong>
+						<span>{closest.date}</span>
+						<span>{closest.y} cases | {closest.deaths} deaths</span>
+					</div>
+				</Pancake.Point>
 			{/if}
-		</Pancake.Svg>
 
-		{#if closest}
-			<Pancake.Point x={closest.x} y={closest.y}>
-				<span class="annotation-point"></span>
-				<div class="annotation" style="transform: translate(-{100 * ((closest.x - x1) / (x2 - x1))}%,0)">
-					<strong>{closest.country.name}</strong>
-					<span>{closest.date}</span>
-					<span>{closest.y} cases | {closest.deaths} deaths</span>
-				</div>
-			</Pancake.Point>
-		{/if}
-
-		<Pancake.Quadtree data={points} bind:closest/>
-	</Pancake.Chart>
-</div>
+			<Pancake.Quadtree data={points} bind:closest/>
+		</Pancake.Chart>
+	</div>
 </wired-card>
 
 <wired-card elevation="3" style="margin: 4em auto; text-align: center;">
@@ -163,7 +163,7 @@
 <style>
 	.header {
 		text-align: center;
-		margin: 1em auto;
+		margin: 1em auto 2em;
 	}
 
 	h2 {
@@ -174,20 +174,12 @@
 
 	.input {
 		display: block;
-		margin: 1em auto;
-		width: 85%;
-		max-width: 250px;
+		margin: 1em auto 2em;
 	}
 
 	.chart {
 		height: 400px;
 		padding: 1em 0 1.5em 36px;
-	}
-
-	input {
-		font-size: inherit;
-		font-family: inherit;
-		padding: 0.5em;
 	}
 
 	.grid-line {
