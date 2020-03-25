@@ -22,7 +22,10 @@
     "wired-button": "^2.0.2",
     "wired-card": "^2.0.2",
     "wired-input": "^2.0.2",
+    "wired-item": "^2.0.2",
     "wired-link": "^2.0.2",
+    "wired-listbox": "^2.0.2",
+    "wired-progress": "^2.0.2",
     "wired-slider": "^2.0.2"
   }
 }

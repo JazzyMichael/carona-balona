@@ -4,6 +4,7 @@ import { WiredCard } from 'wired-card';
 import { WiredLink } from 'wired-link';
 import { WiredButton } from 'wired-button';
 import LineChart from './LineChart.svelte';
+import Top10 from './Top10.svelte';
 
 const url = 'https://pomber.github.io/covid19/timeseries.json';
 let data;
@@ -12,6 +13,7 @@ let totalConfirmed;
 let totalDeaths;
 
 const addCommas = (num) => {
+	if (!num) return
 	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -37,13 +39,13 @@ onMount(async () => {
 		return val[val.length - 1].date > acc ? val[val.length - 1].date : acc;
 	}, '');
 	
-	totalConfirmed = addCommas(Object.values(data).reduce((acc, val) => {
+	totalConfirmed = Object.values(data).reduce((acc, val) => {
 		return val[val.length - 1].confirmed + acc;
-	}, 0));
+	}, 0);
 
-	totalDeaths = addCommas(Object.values(data).reduce((acc, val) => {
+	totalDeaths = Object.values(data).reduce((acc, val) => {
 		return val[val.length - 1].deaths + acc;
-	}, 0));
+	}, 0);
 });
 
 </script>
@@ -73,15 +75,19 @@ onMount(async () => {
 
 <div class="stat-cards">
 	<wired-card elevation="3" fill="#1a83e6" style="padding: 2em; margin: 0.2em;">
-		<span style="color: white">{totalConfirmed} Cases</span>
+		<span style="color: white">{addCommas(totalConfirmed)} Cases</span>
 	</wired-card>
 
 	<wired-card elevation="3" fill="#ff3e00" style="padding: 2em; margin: 0.2em;">
-		<span style="color: white">{totalDeaths} Deaths</span>
+		<span style="color: white">{addCommas(totalDeaths)} Deaths</span>
 	</wired-card>
 </div>
 
-<LineChart countries={data}></LineChart>
+<div style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap;">
+	<LineChart countries={data}></LineChart>
+	<span style="width: 4em; height: 4em;"></span>
+	<Top10 countries={data} totalConfirmed={totalConfirmed} totalDeaths={totalDeaths}></Top10>
+</div>
 
 <wired-card class="disclaimer-card">
 	<p>Data is from the Novel Coronavirus COVID-19 Data Repository by Johns Hopkins Center for Systems Science and Engineering. It is converted to an easily accessible JSON document and updated daily by <wired-link href="https://pomb.us/" target="_blank">"Pomber"</wired-link> before being analyzed here on the site.</p>
