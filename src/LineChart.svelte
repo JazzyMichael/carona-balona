@@ -87,7 +87,7 @@ $: {
 
 <div class="chart-filters">
     <div>
-        <p style="text-align: center; margin-bottom: 0; color: gray;">Zoom</p>
+        <p style="text-align: center; margin-bottom: 0; color: gray;">Stretch</p>
         <wired-slider class="range-slider" value="0" min={minRange} max={maxRange} bind:this={range} on:change={onSlide}></wired-slider>
     </div>
     <wired-input class="search-input" bind:this={filter} placeholder="Search" on:input={onSearch}></wired-input>
