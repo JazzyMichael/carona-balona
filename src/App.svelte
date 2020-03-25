@@ -74,11 +74,11 @@ onMount(async () => {
 </wired-card>
 
 <div class="stat-cards">
-	<wired-card elevation="3" fill="#1a83e6" style="padding: 2em; margin: 0.2em;">
+	<wired-card elevation="3" fill="#3367d6" style="padding: 2em; margin: 0.2em;">
 		<span style="color: white">{addCommas(totalConfirmed)} Cases</span>
 	</wired-card>
 
-	<wired-card elevation="3" fill="#ff3e00" style="padding: 2em; margin: 0.2em;">
+	<wired-card elevation="3" fill="#ea7075" style="padding: 2em; margin: 0.2em;">
 		<span style="color: white">{addCommas(totalDeaths)} Deaths</span>
 	</wired-card>
 </div>

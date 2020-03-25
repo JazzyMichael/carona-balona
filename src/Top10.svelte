@@ -85,7 +85,7 @@ $: {
 
 <style>
 .progress {
-    --wired-progress-color: #dc00321a;
+    --wired-progress-color: #e48f73;
     width: 300px;
     max-width: 98%;
     display: block;
@@ -93,8 +93,8 @@ $: {
 }
 
 .listbox {
-    --wired-item-selected-color: darkred;
-    --wired-item-selected-bg: #dc00321a;
+    --wired-item-selected-color: #e48f73;
+    --wired-item-selected-bg: #fff1f4;
 }
 
 @media (min-width: 900px) {

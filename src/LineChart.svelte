@@ -218,7 +218,7 @@ path.data {
 }
 
 .highlight {
-	stroke: #ff3e00;
+	stroke: #ea7075;
 	fill: none;
 	stroke-width: 2;
 }
@@ -237,7 +237,7 @@ path.data {
 	position: absolute;
 	width: 10px;
 	height: 10px;
-	background-color: #ff3e00;
+	background-color: #ea7075;
 	border-radius: 50%;
 	transform: translate(-50%,-50%);
 }
