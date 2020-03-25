@@ -68,13 +68,13 @@
 
 		maxRange = confirmed[0].data.length - 5;
 		
-		totalConfirmed = confirmed.reduce((acc, val) => {
+		totalConfirmed = addCommas(confirmed.reduce((acc, val) => {
 			return val.data[val.data.length - 1].y + acc;
-		}, 0);
+		}, 0));
 
-		totalDeaths = confirmed.reduce((acc, val) => {
+		totalDeaths = addCommas(confirmed.reduce((acc, val) => {
 			return val.data[val.data.length - 1].deaths + acc;
-		}, 0);
+		}, 0));
 	});
 
 	$: regex = filter ? new RegExp(filter.value, 'i') : null;
@@ -97,6 +97,10 @@
 	const handleSlide = () => {
 		let startingIndex = range.value || 0;
 		x1 = confirmed[0].data[startingIndex].x;
+	}
+
+	const addCommas = (num) => {
+		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 </script>
 
