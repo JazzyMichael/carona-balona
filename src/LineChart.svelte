@@ -12,12 +12,12 @@ let y1 = +Infinity;
 let y2 = -Infinity;
 
 let closest;
-let filter;
+let filter = '';
 let range;
 let minRange = 0;
 let maxRange;
 
-$: regex = filter ? new RegExp(filter.value, 'i') : null;
+$: regex = filter ? new RegExp(filter, 'i') : null;
 $: filtered = regex ? countries.filter(country => regex.test(country.name)) : countries;
 $: points = filtered.reduce((acc, country) => {
     return acc.concat(country.data.map(d => ({
@@ -32,10 +32,6 @@ $: points = filtered.reduce((acc, country) => {
 
 const addCommas = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-const onSearch = () => {
-    regex = filter ? new RegExp(filter.value, 'i') : null;
 }
 
 const onSlide = () => {
@@ -86,10 +82,12 @@ $: {
 <div style="flex-grow: 1; margin-bottom: 4em;">
 
 <div class="chart-filters">
-    <wired-input class="search-input" bind:this={filter} placeholder="Search" on:input={onSearch}></wired-input>
+    <wired-card elevation="3" class="search-input-card">
+        <input class="search-input" placeholder="search" bind:value={filter}>
+    </wired-card>
 
     <div>
-        <p style="text-align: center; margin-bottom: 0; color: gray;">Stretch</p>
+        <p style="text-align: center; margin-bottom: 0; color: #67736e;">stretch</p>
         <wired-slider class="range-slider" value="0" min={minRange} max={maxRange} bind:this={range} on:change={onSlide}></wired-slider>
     </div>
 </div>
@@ -150,14 +148,22 @@ $: {
 	margin: 1em auto;
 }
 
-.search-input {
+.search-input-card {
 	display: block;
 	margin: 1em auto 2em;
+}
+
+.search-input {
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    border: none;
 }
 
 .range-slider {
 	display: block;
 	margin: 0 auto 1em;
+    --wired-slider-bar-color: var(--text);
 }
 
 .chart-title {
@@ -210,7 +216,8 @@ $: {
 }
 
 path.data {
-	stroke: rgba(0,0,0,0.2);
+    stroke: var(--text);
+	/* stroke: rgba(0,0,0,0.2); */
 	stroke-linejoin: round;
 	stroke-linecap: round;
 	stroke-width: 1px;
@@ -228,7 +235,8 @@ path.data {
 	white-space: nowrap;
 	bottom: 1em;
 	line-height: 1.2;
-	background-color: rgba(255,255,255,0.9);
+    background-color: var(--bg);
+	/* background-color: rgba(255,255,255,0.9); */
 	padding: 0.2em 0.4em;
 	border-radius: 2px;
 }

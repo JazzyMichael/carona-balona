@@ -26,6 +26,7 @@
     "wired-link": "^2.0.2",
     "wired-listbox": "^2.0.2",
     "wired-progress": "^2.0.2",
-    "wired-slider": "^2.0.2"
+    "wired-slider": "^2.0.2",
+    "wired-toggle": "^2.0.2"
   }
 }

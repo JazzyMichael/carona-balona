@@ -79,7 +79,9 @@ $: {
                 <wired-progress class="progress" value={country[selected]} max={selected === 'ratio' ? 100 : top[selected][0][selected]} percentage={selected === 'ratio'}></wired-progress>
             {/each}
         </wired-card>
-        <p style="text-align: center"><i>*ratio includes countries with at least 100 confirmed cases</i></p>
+        <!-- {#if selected === 'ratio'}
+            <p style="text-align: center"><i>*ratio includes countries with at least 100 confirmed cases</i></p>
+        {/if} -->
     {/if}
 </div>
 

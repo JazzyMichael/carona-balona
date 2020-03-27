@@ -3,6 +3,7 @@ import { onMount } from 'svelte';
 import { WiredCard } from 'wired-card';
 import { WiredLink } from 'wired-link';
 import { WiredButton } from 'wired-button';
+import { WiredToggle } from 'wired-toggle';
 import LineChart from './LineChart.svelte';
 import Top10 from './Top10.svelte';
 
@@ -11,6 +12,7 @@ let data;
 let lastUpdate;
 let totalConfirmed;
 let totalDeaths;
+let theme = 'dark';
 
 const addCommas = (num) => {
 	if (!num) return
@@ -46,34 +48,42 @@ onMount(async () => {
 	totalDeaths = Object.values(data).reduce((acc, val) => {
 		return val[val.length - 1].deaths + acc;
 	}, 0);
+
+	document.body.classList.add('light');
+	theme = 'light';
 });
+
+const toggleTheme = () => {
+	if (theme === 'light') {
+		document.body.classList.replace('light', 'dark');
+		theme = 'dark';
+	} else if (theme === 'dark') {
+		document.body.classList.replace('dark', 'light');
+		theme = 'light';
+	}
+}
 
 </script>
 
 <svelte:head>
-	<style>
-		html, body {
-			overflow-x: hidden;
-		}
-	</style>
+<style>
+html, body {
+	overflow-x: hidden;
+	color: var(--text);
+	background: var(--bg);
+}
+</style>
 </svelte:head>
 
-<wired-card fill="#fff1f4" class="header-container">
+<wired-card class="header-container">
 	<div class="header-content">
-		<h2 style="color: #e48f73; font-weight: 400;">🍺 CARONA VIRUS 🤢</h2>
-
-		<span style="width: 1em"></span>
-		
-		{#if lastUpdate}
-			<p style="font-size: 0.9em;">Last Updated: {lastUpdate}</p>
-		{:else}
-			<p style="font-size: 0.9em">   </p>
-		{/if}
+		<h2 style="color: #e48f73; font-weight: 400; display: inline;">🍺 CARONA VIRUS 🤢</h2>
+		<wired-toggle bind:this={theme} on:change={toggleTheme} class="theme-toggle"></wired-toggle>
 	</div>
 	<wired-card class="header-divider" elevation="2"></wired-card>
 </wired-card>
 
-<div class="stat-cards">
+<div class="stat-cards dark">
 	<wired-card elevation="3" fill="#3367d6" style="padding: 2em; margin: 0.2em;">
 		<span style="color: white">{addCommas(totalConfirmed)} Cases</span>
 	</wired-card>
@@ -110,6 +120,10 @@ onMount(async () => {
 </div>
 
 <style>
+.theme-toggle {
+	float: right;
+}
+
 .header-container {
 	overflow: hidden;
 	display: block;
@@ -121,11 +135,7 @@ onMount(async () => {
 
 .header-content {
 	text-align: center;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-wrap: wrap;
-	overflow: hidden;
+	padding: 1em 0;
 }
 
 .header-divider {
@@ -160,5 +170,22 @@ onMount(async () => {
 	padding: 1em;
 	margin: -8px;
 	border-top: 1px solid #e48f73;
+}
+
+:global(.light) {
+    --bg: white;
+    /* --bg-nav: linear-gradient(to right, var(--gray1), var(--gray3)); */
+    /* --bg-dropdown: var(--gray0); */
+    --text: black;
+    /* --border-color: var(--blue);
+    --bg-solar: var(--yellow); */
+}
+:global(.dark) {
+    --bg: black;
+    /* --bg-nav: linear-gradient(to right, var(--gray5), var(--gray6)); */
+    /* --bg-dropdown: var(--gray6); */
+    --text: white;
+    /* --border-color: var(--purple); */
+    /* --bg-solar: var(--blue); */
 }
 </style>
