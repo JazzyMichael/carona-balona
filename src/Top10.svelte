@@ -14,7 +14,9 @@ let total = {};
 $: list = selected ? top[selected] : [];
 
 const onSelect = (event) => {
-    selected = event.target.value.value;
+    if (event && event.target && event.target.value && event.target.value.value) {
+        selected = event.target.value.value;
+    }
 }
 
 const addCommas = (num) => {

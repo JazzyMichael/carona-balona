@@ -49,8 +49,14 @@ onMount(async () => {
 		return val[val.length - 1].deaths + acc;
 	}, 0);
 
-	document.body.classList.add('light');
-	theme = 'light';
+	const storedTheme = localStorage.getItem('theme');
+	if (!storedTheme || storedTheme === 'light') {
+		document.body.classList.add('light');
+		theme = 'light';
+	} else {
+		document.body.classList.add('dark');
+		theme = 'dark';
+	}
 });
 
 const toggleTheme = () => {
@@ -61,6 +67,7 @@ const toggleTheme = () => {
 		document.body.classList.replace('dark', 'light');
 		theme = 'light';
 	}
+	localStorage.setItem('theme', theme);
 }
 
 </script>
@@ -78,7 +85,7 @@ html, body {
 <wired-card class="header-container">
 	<div class="header-content">
 		<h2 style="color: #e48f73; font-weight: 400; display: inline;">🍺 CARONA VIRUS 🤢</h2>
-		<wired-toggle bind:this={theme} on:change={toggleTheme} class="theme-toggle"></wired-toggle>
+		<wired-toggle on:change={toggleTheme} class="theme-toggle"></wired-toggle>
 	</div>
 	<wired-card class="header-divider" elevation="2"></wired-card>
 </wired-card>
@@ -108,12 +115,16 @@ html, body {
 		style="display: flex; align-items: center; padding: 0.5em; color: #3934c1;"
 		href="https://github.com/Jappzy/carona-balona"
 		target="_blank">
-		<svg role="img" height="40" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-		<span style="margin-left: 1em">View Source</span>
+		{#if theme === 'dark'}
+			<svg class="inverted-image" role="img" height="40" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub Icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+		{:else}
+			<svg role="img" height="40" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub Icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+		{/if}
+		<span style="margin-left: 1em; color: #3367d6;">View Source</span>
 	</a>
 </wired-button>
 
-<div style="height: 25vh"></div>
+<div style="height: 20vh"></div>
 
 <div class="footer-container">
 	<span>Copyright &copy; {new Date().getFullYear()} caronabalona.com. All rights reserved.</span>
@@ -122,6 +133,8 @@ html, body {
 <style>
 .theme-toggle {
 	float: right;
+	--wired-toggle-off-color: #3367d6;
+	--wired-toggle-on-color: #ea7075;
 }
 
 .header-container {
@@ -170,6 +183,12 @@ html, body {
 	padding: 1em;
 	margin: -8px;
 	border-top: 1px solid #e48f73;
+	color: black;
+}
+
+.inverted-image {
+	filter: invert(100%);
+	-webkit-filter: invert(100%);
 }
 
 :global(.light) {

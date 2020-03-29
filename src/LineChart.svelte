@@ -158,12 +158,15 @@ $: {
     background: var(--bg);
     outline: none;
     border: none;
+    margin: 0;
 }
 
 .range-slider {
 	display: block;
 	margin: 0 auto 1em;
     --wired-slider-bar-color: var(--text);
+    --wired-slider-knob-color: #3367d6;
+    --wired-slider-knob-zero-color: #3367d6;
 }
 
 .chart-title {
