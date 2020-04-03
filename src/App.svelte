@@ -3,6 +3,7 @@ import { onMount } from 'svelte';
 import { WiredCard } from 'wired-card';
 import { WiredButton } from 'wired-button';
 import { WiredToggle } from 'wired-toggle';
+import { WiredLink } from 'wired-link';
 import LineChart from './LineChart.svelte';
 import Top10 from './Top10.svelte';
 import Header from './Header.svelte';
