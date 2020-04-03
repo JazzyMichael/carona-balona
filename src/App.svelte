@@ -91,11 +91,11 @@ html, body {
 </wired-card>
 
 <div class="stat-cards dark">
-	<wired-card elevation="3" fill="#3367d6" style="padding: 2em; margin: 0.2em;">
+	<wired-card elevation="3" fill="#3367d6" style="padding: 2em; margin: 0.2em; text-align: center;">
 		<span style="color: white">{addCommas(totalConfirmed)} Cases</span>
 	</wired-card>
 
-	<wired-card elevation="3" fill="#ea7075" style="padding: 2em; margin: 0.2em;">
+	<wired-card elevation="3" fill="#ea7075" style="padding: 2em; margin: 0.2em; text-align: center;">
 		<span style="color: white">{addCommas(totalDeaths)} Deaths</span>
 	</wired-card>
 </div>
