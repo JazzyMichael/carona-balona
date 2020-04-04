@@ -12,7 +12,7 @@
 	display: flex;
 	justify-content: center;
 	padding: 1em;
-	margin: 20vh -8px -8px -8px;
+	margin: 10vh -8px -8px -8px;
 	border-top: 1px solid #e48f73;
 	color: black;
 }

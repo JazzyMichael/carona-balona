@@ -86,17 +86,23 @@ html, body {
 
 <div class="stat-cards dark">
 	<wired-card elevation="3" fill="#3367d6" style="padding: 2em; margin: 0.2em; text-align: center;">
-		<span style="color: white">{addCommas(totalConfirmed)} Cases</span>
+		{#if totalConfirmed}
+			<span style="color: white">{addCommas(totalConfirmed)} Cases</span>
+		{/if}
 	</wired-card>
 
 	<wired-card elevation="3" fill="#ea7075" style="padding: 2em; margin: 0.2em; text-align: center;">
-		<span style="color: white">{addCommas(totalDeaths)} Deaths</span>
+		{#if totalDeaths}
+			<span style="color: white">{addCommas(totalDeaths)} Deaths</span>
+		{/if}
 	</wired-card>
 </div>
 
 <div style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap;">
 	<LineChart countries={data}></LineChart>
-	<Top10 countries={data} totalConfirmed={totalConfirmed} totalDeaths={totalDeaths}></Top10>
+	{#if totalConfirmed && totalDeaths}
+		<Top10 countries={data} totalConfirmed={totalConfirmed} totalDeaths={totalDeaths}></Top10>
+	{/if}
 </div>
 
 <wired-card class="disclaimer-card">
