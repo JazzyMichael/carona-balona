@@ -43,9 +43,9 @@ const convertData = (dataObj) => {
 $: {
     countries = convertData(countries);
     top = {
-        confirmed: [...countries].sort((a, b) => b.confirmed - a.confirmed).slice(0, 10),
-        deaths: [...countries].sort((a, b) => b.deaths - a.deaths).slice(0, 10),
-        ratio: [...countries].filter(x => x.confirmed > 100).sort((a, b) => b.ratio - a.ratio).slice(0, 10)
+        confirmed: [...countries].sort((a, b) => b.confirmed - a.confirmed).slice(0, 11),
+        deaths: [...countries].sort((a, b) => b.deaths - a.deaths).slice(0, 11),
+        ratio: [...countries].filter(x => x.confirmed > 1000).sort((a, b) => b.ratio - a.ratio).slice(0, 11)
     }
     total = {
         confirmed: totalConfirmed,
@@ -58,7 +58,7 @@ $: {
 
 <div class="container">
     <div style="display: flex; justify-content: space-around; align-items: center;">
-        <h3>Top 10</h3>
+        <h3>Top 11</h3>
 
         <wired-listbox horizontal="true" selected="confirmed" on:selected={onSelect} class="listbox">
             <wired-item value="confirmed">Confirmed</wired-item>
@@ -82,7 +82,7 @@ $: {
             {/each}
         </wired-card>
         <!-- {#if selected === 'ratio'}
-            <p style="text-align: center"><i>*ratio includes countries with at least 100 confirmed cases</i></p>
+            <p style="text-align: center"><i>*ratio includes countries with at least 1000 confirmed cases</i></p>
         {/if} -->
     {/if}
 </div>
