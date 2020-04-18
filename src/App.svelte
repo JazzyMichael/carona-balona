@@ -43,35 +43,31 @@ onMount(async () => {
 	}, 0);
 
 	const theme = localStorage.getItem('theme');
-	if (!theme || theme === 'light') {
-		document.body.classList.add('light');
-	} else {
-		document.body.classList.add('dark');
-	}
+	document.body.classList.add(!theme ? 'light' : theme);
 });
 
 </script>
 
 <svelte:head>
-<style>
-.light {
-    --bg: white;
-    --text: black;
-	--svg-filter: invert(0%);
-}
+	<style>
+		.light {
+			--bg: white;
+			--text: black;
+			--svg-filter: invert(0%);
+		}
 
-.dark {
-    --bg: black;
-    --text: white;
-	--svg-filter: invert(100%);
-}
+		.dark {
+			--bg: black;
+			--text: white;
+			--svg-filter: invert(100%);
+		}
 
-html, body {
-	overflow-x: hidden;
-	color: var(--text);
-	background: var(--bg);
-}
-</style>
+		html, body {
+			overflow-x: hidden;
+			color: var(--text);
+			background: var(--bg);
+		}
+	</style>
 </svelte:head>
 
 <Header/>

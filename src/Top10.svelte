@@ -90,23 +90,23 @@ $: {
 </div>
 
 <style>
-.progress {
-    --wired-progress-color: #e48f73;
-    width: 300px;
-    max-width: 98%;
-    display: block;
-    margin: auto;
-}
-
-.listbox {
-    --wired-item-selected-color: #e48f73;
-    --wired-item-selected-bg: #fff1f4;
-}
-
-@media (min-width: 900px) {
-    .container {
-        margin-right: 1.5em;
-        margin-left: 3em;
+    .progress {
+        --wired-progress-color: #e48f73;
+        width: 300px;
+        max-width: 98%;
+        display: block;
+        margin: auto;
     }
-}
+
+    .listbox {
+        --wired-item-selected-color: #e48f73;
+        --wired-item-selected-bg: #fff1f4;
+    }
+
+    @media (min-width: 900px) {
+        .container {
+            margin-right: 1.5em;
+            margin-left: 3em;
+        }
+    }
 </style>

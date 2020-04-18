@@ -1,20 +1,20 @@
 <script>
+	const toggleTheme = () => {
+		let theme = localStorage.getItem('theme') || 'light';
 
-const toggleTheme = () => {
-    let theme = localStorage.getItem('theme') || 'light';
+		if (theme === 'light') {
+			document.body.classList.replace('light', 'dark');
+			theme = 'dark';
+		} else if (theme === 'dark') {
+			document.body.classList.replace('dark', 'light');
+			theme = 'light';
+		}
 
-	if (theme === 'light') {
-        document.body.classList.replace('light', 'dark');
-        theme = 'dark';
-	} else if (theme === 'dark') {
-        document.body.classList.replace('dark', 'light');
-        theme = 'light';
-    }
-
-	localStorage.setItem('theme', theme);
-}
-
+		localStorage.setItem('theme', theme);
+	}
 </script>
+
+
 
 <wired-card class="header-container">
 	<div class="header-content">
@@ -24,31 +24,33 @@ const toggleTheme = () => {
 	<wired-card class="header-divider" elevation="2"></wired-card>
 </wired-card>
 
+
+
 <style>
-.theme-toggle {
-	float: right;
-	--wired-toggle-off-color: #3367d6;
-	--wired-toggle-on-color: #ea7075;
-}
+	.theme-toggle {
+		float: right;
+		--wired-toggle-off-color: #3367d6;
+		--wired-toggle-on-color: #ea7075;
+	}
 
-.header-container {
-	overflow: hidden;
-	display: block;
-	margin: -16px;
-	width: calc(100% + 32px);
-	padding-bottom: 0;
-	box-sizing: border-box;
-}
+	.header-container {
+		overflow: hidden;
+		display: block;
+		margin: -16px;
+		width: calc(100% + 32px);
+		padding-bottom: 0;
+		box-sizing: border-box;
+	}
 
-.header-content {
-	text-align: center;
-	padding: 1em 0;
-}
+	.header-content {
+		text-align: center;
+		padding: 1em 0;
+	}
 
-.header-divider {
-	color: #e48f73;
-	width: 100%;
-	margin-left: -8px;
-	margin-right: -8px;
-}
+	.header-divider {
+		color: #e48f73;
+		width: 100%;
+		margin-left: -8px;
+		margin-right: -8px;
+	}
 </style>

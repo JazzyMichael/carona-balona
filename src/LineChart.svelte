@@ -79,63 +79,69 @@ $: {
 
 </script>
 
+
+
 <div style="flex-grow: 1; margin-bottom: 4em;">
 
-<div class="chart-filters">
-    <wired-card elevation="3" class="search-input-card">
-        <input class="search-input" placeholder="search" bind:value={filter}>
-    </wired-card>
+    <div class="chart-filters">
+        <wired-card elevation="3" class="search-input-card">
+            <input class="search-input" placeholder="search" bind:value={filter}>
+        </wired-card>
 
-    <div>
-        <p style="text-align: center; margin-bottom: 0; color: #67736e;">stretch</p>
-        <wired-slider class="range-slider" value="0" min={minRange} max={maxRange} bind:this={range} on:change={onSlide}></wired-slider>
+        <div>
+            <p style="text-align: center; margin-bottom: 0; color: #67736e;">stretch</p>
+            <wired-slider class="range-slider" value="0" min={minRange} max={maxRange} bind:this={range} on:change={onSlide}></wired-slider>
+        </div>
     </div>
-</div>
 
-<h3 class="chart-title">Countries</h3>
 
-<wired-card elevation="3" class="chart-card">
-    <div class="chart">
-        <Pancake.Chart {x1} {x2} y1={y1} y2={y2}>
-            <Pancake.Grid horizontal count={6} let:value>
-                <div class="grid-line horizontal"><span>{value}</span></div>
-            </Pancake.Grid>
+    <h3 class="chart-title">Countries</h3>
 
-            <Pancake.Grid vertical count={3} let:value>
-                <span class="x-label">{new Date(+value * 1000).toLocaleString('en', { month: 'short' })}</span>
-            </Pancake.Grid>
 
-            <Pancake.Svg>
-                {#each filtered as country}
-                    <Pancake.SvgLine data={country.data} let:d>
-                        <path class="data" {d}></path>
-                    </Pancake.SvgLine>
-                {/each}
+    <wired-card elevation="3" class="chart-card">
+        <div class="chart">
+            <Pancake.Chart {x1} {x2} y1={y1} y2={y2}>
+                <Pancake.Grid horizontal count={6} let:value>
+                    <div class="grid-line horizontal"><span>{value}</span></div>
+                </Pancake.Grid>
+
+                <Pancake.Grid vertical count={3} let:value>
+                    <span class="x-label">{new Date(+value * 1000).toLocaleString('en', { month: 'short' })}</span>
+                </Pancake.Grid>
+
+                <Pancake.Svg>
+                    {#each filtered as country}
+                        <Pancake.SvgLine data={country.data} let:d>
+                            <path class="data" {d}></path>
+                        </Pancake.SvgLine>
+                    {/each}
+
+                    {#if closest}
+                        <Pancake.SvgLine data={closest.country.data} let:d>
+                            <path class="highlight" {d}></path>
+                        </Pancake.SvgLine>
+                    {/if}
+                </Pancake.Svg>
 
                 {#if closest}
-                    <Pancake.SvgLine data={closest.country.data} let:d>
-                        <path class="highlight" {d}></path>
-                    </Pancake.SvgLine>
+                    <Pancake.Point x={closest.x} y={closest.y}>
+                        <span class="annotation-point"></span>
+                        <div class="annotation" style="transform: translate(-{100 * ((closest.x - x1) / (x2 - x1))}%,0)">
+                            <strong>{closest.country.name}</strong>
+                            <span>{closest.date}</span>
+                            <span>{addCommas(closest.y)} cases | {addCommas(closest.deaths)} deaths</span>
+                        </div>
+                    </Pancake.Point>
                 {/if}
-            </Pancake.Svg>
 
-            {#if closest}
-                <Pancake.Point x={closest.x} y={closest.y}>
-                    <span class="annotation-point"></span>
-                    <div class="annotation" style="transform: translate(-{100 * ((closest.x - x1) / (x2 - x1))}%,0)">
-                        <strong>{closest.country.name}</strong>
-                        <span>{closest.date}</span>
-                        <span>{addCommas(closest.y)} cases | {addCommas(closest.deaths)} deaths</span>
-                    </div>
-                </Pancake.Point>
-            {/if}
-
-            <Pancake.Quadtree data={points} bind:closest/>
-        </Pancake.Chart>
-    </div>
-</wired-card>
+                <Pancake.Quadtree data={points} bind:closest/>
+            </Pancake.Chart>
+        </div>
+    </wired-card>
 
 </div>
+
+
 
 <style>
 .chart-filters {
