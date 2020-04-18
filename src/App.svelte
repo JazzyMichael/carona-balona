@@ -21,17 +21,9 @@ const addCommas = (num) => {
 }
 
 const getData = async () => {
-	let data;
-	if (localStorage.getItem('data')) {
-		data = JSON.parse(localStorage.getItem('data'));
-		localStorage.removeItem('data');
-		console.log('cached', data);
-	} else {
-		const res = await fetch(url);
-		data = await res.json();
-		localStorage.setItem('data', JSON.stringify(data));
-		console.log('fetched', data);
-	}
+	const res = await fetch(url);
+	const data = await res.json();
+	console.log('Countries:', data);
 	return data;
 }
 
