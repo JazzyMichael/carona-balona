@@ -45,7 +45,7 @@ $: {
     top = {
         confirmed: [...countries].sort((a, b) => b.confirmed - a.confirmed).slice(0, 11),
         deaths: [...countries].sort((a, b) => b.deaths - a.deaths).slice(0, 11),
-        ratio: [...countries].filter(x => x.confirmed > 5000).sort((a, b) => b.ratio - a.ratio).slice(0, 11)
+        ratio: [...countries].filter(x => x.confirmed > 10000).sort((a, b) => b.ratio - a.ratio).slice(0, 11)
     }
     total = {
         confirmed: totalConfirmed,
@@ -84,7 +84,7 @@ $: {
             {/each}
         </wired-card>
         <!-- {#if selected === 'ratio'}
-            <p style="text-align: center"><i>*ratio includes countries with at least 5000 confirmed cases</i></p>
+            <p style="text-align: center"><i>*ratio includes countries with at least 10000 confirmed cases</i></p>
         {/if} -->
     {/if}
 </div>

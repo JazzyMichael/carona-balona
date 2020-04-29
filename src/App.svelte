@@ -15,9 +15,10 @@ let lastUpdate;
 let totalConfirmed;
 let totalDeaths;
 
-const addCommas = (num) => {
-	if (!num) return
-	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const format = (num = '', str = '') => {
+	const value = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	const descriptor = num && str ? ` ${str}` : '';
+	return value + descriptor;
 }
 
 const getData = async () => {
@@ -72,25 +73,19 @@ onMount(async () => {
 
 <Header/>
 
-<div class="stat-cards dark">
-	<wired-card elevation="3" fill="#3367d6" style="padding: 2em; margin: 0.2em; text-align: center;">
-		{#if totalConfirmed}
-			<span style="color: white">{addCommas(totalConfirmed)} Cases</span>
-		{/if}
+<div class="stat-cards">
+	<wired-card elevation="3" fill="#3367d6" class="stat-card">
+		<span>{format(totalConfirmed, 'Cases')}</span>
 	</wired-card>
 
-	<wired-card elevation="3" fill="#ea7075" style="padding: 2em; margin: 0.2em; text-align: center;">
-		{#if totalDeaths}
-			<span style="color: white">{addCommas(totalDeaths)} Deaths</span>
-		{/if}
+	<wired-card elevation="3" fill="#ea7075" class="stat-card">
+		<span>{format(totalDeaths, 'Deaths')}</span>
 	</wired-card>
 </div>
 
-<div style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap;">
+<div class="charts-container">
 	<LineChart countries={data}></LineChart>
-	{#if totalConfirmed && totalDeaths}
-		<Top10 countries={data} totalConfirmed={totalConfirmed} totalDeaths={totalDeaths}></Top10>
-	{/if}
+	<Top10 countries={data} totalConfirmed={totalConfirmed} totalDeaths={totalDeaths}></Top10>
 </div>
 
 <wired-card class="disclaimer-card">
@@ -111,6 +106,20 @@ onMount(async () => {
 	display: flex;
 	justify-content: center;
 	margin: 2em auto;
+}
+
+.stat-card {
+	padding: 2em;
+	margin: 0.2em;
+	text-align: center;
+	color: white;
+}
+
+.charts-container {
+	display: flex;
+	justify-content: space-around;
+	align-items: flex-start;
+	flex-wrap: wrap;
 }
 
 .disclaimer-card {
