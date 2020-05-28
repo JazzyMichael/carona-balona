@@ -18,7 +18,7 @@
 
 <wired-card class="header-container">
 	<div class="header-content">
-		<h2 style="color: #e48f73; font-weight: 400; display: inline;">🍺 CARONA VIRUS 🤢</h2>
+		<h2 class="header-title">🍺 CARONA VIRUS 🤢</h2>
 		<wired-toggle on:change={toggleTheme} class="theme-toggle"></wired-toggle>
 	</div>
 	<wired-card class="header-divider" elevation="2"></wired-card>
@@ -45,6 +45,12 @@
 	.header-content {
 		text-align: center;
 		padding: 1em 0;
+	}
+
+	.header-title {
+		color: #e48f73;
+		font-weight: 400;
+		display: inline;
 	}
 
 	.header-divider {
