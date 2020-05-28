@@ -8,17 +8,17 @@
     "deploy": "firebase deploy --only hosting"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^11.0.0",
-    "@rollup/plugin-node-resolve": "^7.0.0",
+    "@rollup/plugin-commonjs": "^11.1.0",
+    "@rollup/plugin-node-resolve": "^7.1.3",
     "rollup": "^1.20.0",
-    "rollup-plugin-livereload": "^1.0.0",
-    "rollup-plugin-svelte": "^5.0.3",
+    "rollup-plugin-livereload": "^1.3.0",
+    "rollup-plugin-svelte": "^5.2.2",
     "rollup-plugin-terser": "^5.1.2",
-    "svelte": "^3.0.0"
+    "svelte": "^3.23.0"
   },
   "dependencies": {
     "@sveltejs/pancake": "0.0.13",
-    "sirv-cli": "^0.4.4",
+    "sirv-cli": "^0.4.6",
     "wired-button": "^2.0.2",
     "wired-card": "^2.0.2",
     "wired-input": "^2.0.2",
