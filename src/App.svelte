@@ -15,10 +15,13 @@ let data;
 let lastUpdate;
 let totalConfirmed;
 let totalDeaths;
-let USDailyCases;
-const casesTicks = [1, 10000, 20000, 30000, 40000, 50000];
-let USDailyDeaths;
-const deathsTicks = [1, 1000, 2000, 3000];
+let selectedCountry = {
+	name: 'US',
+	dailyCases: [],
+	dailyDeaths: [],
+	casesTicks: [],
+	deathsTicks: []
+};
 
 const format = (num = '', str = '') => {
 	const value = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -26,38 +29,54 @@ const format = (num = '', str = '') => {
 	return value + descriptor;
 }
 
-const getData = async () => {
-	const res = await fetch(url);
-	const data = await res.json();
-	USDailyCases = data.US.map((obj, index) => {
+function selectCountry(name) {
+	if (!name) name = selectedCountry.name;
+	selectedCountry.dailyCases = data[name].map((obj, index) => {
 		const [year, month, day] = obj.date.split('-');
 		const raw = new Date(year, month-1, day);
         const epoch = raw.getTime() / 1000;
 		return {
-			y: index === 0 ? obj.confirmed : obj.confirmed - data.US[index-1].confirmed,
+			y: index === 0 ? obj.confirmed : Math.max(obj.confirmed - data[name][index-1].confirmed, 0),
 			x: epoch,
 			date: obj.date,
 			confirmed: obj.confirmed,
 			xDisplay: `${month}/${day}`
 		};
 	}).filter(day => day.x > 1582500000);
-	USDailyDeaths = data.US.map((obj, index) => {
+
+	selectedCountry.dailyDeaths = data[name].map((obj, index) => {
 		const [year, month, day] = obj.date.split('-');
 		const raw = new Date(year, month-1, day);
         const epoch = raw.getTime() / 1000;
 		return {
-			y: index === 0 ? obj.deaths : obj.deaths - data.US[index-1].deaths,
+			y: index === 0 ? obj.deaths : Math.max(obj.deaths - data[name][index-1].deaths, 0),
 			x: epoch,
 			date: obj.date,
 			deaths: obj.deaths,
 			xDisplay: `${month}/${day}`
 		};
 	}).filter(day => day.x > 1582500000);
-	return data;
-}
+
+	const highestNewCases = selectedCountry.dailyCases.reduce((acc, val) => Math.max(acc, val.y), 0);
+	const highestNewDeaths = selectedCountry.dailyDeaths.reduce((acc, val) => Math.max(acc, val.y), 0);
+
+	selectedCountry.casesTicks = [1];
+	selectedCountry.deathsTicks = [1];
+
+	if (highestNewCases < 10000) selectedCountry.casesTicks.push(5000);
+	for (let i = 1; i * 10000 < highestNewCases + 10000; i++) {
+		selectedCountry.casesTicks.push(i * 10000);
+	}
+
+	if (highestNewDeaths < 1000) selectedCountry.deathsTicks.push(500);
+	for (let i = 1; i * 1000 < highestNewDeaths + 1000; i++) {
+		selectedCountry.deathsTicks.push(i * 1000);
+	}
+};
 
 onMount(async () => {
-	data = await getData();
+	data = await fetch(url).then(res => res.json());
+	selectCountry('US');
 
 	lastUpdate = Object.values(data).reduce((acc, val) => {
 		return val[val.length - 1].date > acc ? val[val.length - 1].date : acc;
@@ -80,14 +99,14 @@ onMount(async () => {
 <svelte:head>
 	<style>
 		.light {
-			--bg: white;
+			--bg: #f5f5f5;
 			--text: black;
 			--svg-filter: invert(0%);
 		}
 
 		.dark {
 			--bg: black;
-			--text: white;
+			--text: #f5f5f5;
 			--svg-filter: invert(100%);
 		}
 
@@ -111,10 +130,22 @@ onMount(async () => {
 	</wired-card>
 </div>
 
-<div class="daily-charts">
-	<AreaChart title="US Cases per Day" data={USDailyCases} data2={USDailyDeaths} yTicks={casesTicks}></AreaChart>
-	<AreaChart title="US Deaths per Day" data={USDailyDeaths} yTicks={deathsTicks}></AreaChart>
+<div style="margin-top: 5vh; text-align: center;">
+	{#if data && selectedCountry.name}
+		<select name="country-daily-select" id="country-select" bind:value={selectedCountry.name} on:change={() => selectCountry()}>
+			{#each Object.keys(data) as country}
+				<option value={country}>{ country }</option>
+			{/each}
+		</select>
+	{/if}
 </div>
+
+{#if selectedCountry && selectedCountry.name && selectedCountry.dailyCases && selectedCountry.dailyDeaths}
+<div class="daily-charts">
+	<AreaChart title="{selectedCountry.name} Cases per Day" data={selectedCountry.dailyCases} data2={selectedCountry.dailyDeaths} yTicks={selectedCountry.casesTicks}></AreaChart>
+	<AreaChart title="{selectedCountry.name} Deaths per Day" data={selectedCountry.dailyDeaths} yTicks={selectedCountry.deathsTicks}></AreaChart>
+</div>
+{/if}
 
 <div class="charts-container">
 	<LineChart countries={data}></LineChart>
@@ -160,7 +191,7 @@ onMount(async () => {
 	display: grid;
 	grid-gap: 3em;
 	grid-template-columns: 1fr;
-	margin: 10vh 2em 12vh;
+	margin: 2vh 2em 12vh;
 }
 
 @media (min-width: 800px) {

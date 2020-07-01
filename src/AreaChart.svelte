@@ -3,7 +3,7 @@
 	
 	export let title = '';
 	export let data;
-	export let data2;
+	export let data2 = null;
 	export let yTicks;
 
 	const xTicks = [
@@ -27,8 +27,8 @@
 		.domain([Math.min.apply(null, yTicks), Math.max.apply(null, yTicks)])
 		.range([height - padding.bottom, padding.top]);
 
-	$: minX = data ? data[0].x : 0;
-	$: maxX = data ? data[data.length - 1].x : 0;
+	$: minX = data && data.length ? data[0].x : 0;
+	$: maxX = data && data.length ? data[data.length - 1].x : 0;
 	$: path = data ? `M${data.map(p => `${xScale(p.x)},${yScale(p.y)}`).join('L')}` : '';
 	$: area = data ? `${path}L${xScale(maxX)},${yScale(0)}L${xScale(minX)},${yScale(0)}Z` : '';
 	
@@ -41,13 +41,13 @@
 
 </script>
 
+{#if data && data.length}
 <div class="chart-container">
 
 	<h2 style="text-align: center">{ title }</h2>
 
 	<div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
 		<svg>
-			<!-- y axis -->
 			<g class="axis y-axis" transform="translate(0, {padding.top})">
 				{#each yTicks as tick}
 					<g class="tick tick-{tick}" transform="translate(0, {yScale(tick) - padding.bottom})">
@@ -57,18 +57,15 @@
 				{/each}
 			</g>
 
-			<!-- x axis -->
 			<g class="axis x-axis">
 				{#each xTicks as tick}
 					<g class="tick tick-{ tick.timestamp }" transform="translate({xScale(tick.timestamp)},{height})">
 						<line y1="-{height}" y2="-{padding.bottom}" x1="0" x2="0"></line>
-						<!-- <text y="-2">{width > 380 ? tick : formatMobile(tick)}</text> -->
 						<text y="-2">{ tick.display }</text>
 					</g>
 				{/each}
 			</g>
 
-			<!-- data -->
 			<path class="path-area" d={area}></path>
 			<path class="path-line" d={path}></path>
 
@@ -78,6 +75,7 @@
 	</div>
 
 </div>
+{/if}
 
 <style>
 	.chart-container {
