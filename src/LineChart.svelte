@@ -67,7 +67,7 @@ const convertData = (dataObj) => {
                 date: obj.date,
                 deaths: obj.deaths,
                 xDisplay: `${month}/${day}`
-            }
+            };
         })
     }));
 }

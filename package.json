@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@sveltejs/pancake": "0.0.13",
+    "d3-scale": "^3.2.1",
     "sirv-cli": "^0.4.6",
     "wired-button": "^2.0.2",
     "wired-card": "^2.0.2",

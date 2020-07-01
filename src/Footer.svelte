@@ -1,6 +1,3 @@
-<script>
-
-</script>
 
 <div class="footer-container">
 	<span>Copyright &copy; {new Date().getFullYear()} caronabalona.com. All rights reserved.</span>

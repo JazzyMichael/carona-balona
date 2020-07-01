@@ -5,6 +5,7 @@ import { WiredButton } from 'wired-button';
 import { WiredToggle } from 'wired-toggle';
 import { WiredLink } from 'wired-link';
 import LineChart from './LineChart.svelte';
+import AreaChart from './AreaChart.svelte';
 import Top10 from './Top10.svelte';
 import Header from './Header.svelte';
 import Footer from './Footer.svelte';
@@ -14,6 +15,10 @@ let data;
 let lastUpdate;
 let totalConfirmed;
 let totalDeaths;
+let USDailyCases;
+const casesTicks = [1, 10000, 20000, 30000, 40000, 50000];
+let USDailyDeaths;
+const deathsTicks = [1, 1000, 2000, 3000];
 
 const format = (num = '', str = '') => {
 	const value = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -24,7 +29,30 @@ const format = (num = '', str = '') => {
 const getData = async () => {
 	const res = await fetch(url);
 	const data = await res.json();
-	console.log('Countries:', data);
+	USDailyCases = data.US.map((obj, index) => {
+		const [year, month, day] = obj.date.split('-');
+		const raw = new Date(year, month-1, day);
+        const epoch = raw.getTime() / 1000;
+		return {
+			y: index === 0 ? obj.confirmed : obj.confirmed - data.US[index-1].confirmed,
+			x: epoch,
+			date: obj.date,
+			confirmed: obj.confirmed,
+			xDisplay: `${month}/${day}`
+		};
+	}).filter(day => day.x > 1582500000);
+	USDailyDeaths = data.US.map((obj, index) => {
+		const [year, month, day] = obj.date.split('-');
+		const raw = new Date(year, month-1, day);
+        const epoch = raw.getTime() / 1000;
+		return {
+			y: index === 0 ? obj.deaths : obj.deaths - data.US[index-1].deaths,
+			x: epoch,
+			date: obj.date,
+			deaths: obj.deaths,
+			xDisplay: `${month}/${day}`
+		};
+	}).filter(day => day.x > 1582500000);
 	return data;
 }
 
@@ -83,17 +111,30 @@ onMount(async () => {
 	</wired-card>
 </div>
 
+<div class="daily-charts">
+	<AreaChart title="US Cases per Day" data={USDailyCases} data2={USDailyDeaths} yTicks={casesTicks}></AreaChart>
+	<AreaChart title="US Deaths per Day" data={USDailyDeaths} yTicks={deathsTicks}></AreaChart>
+</div>
+
 <div class="charts-container">
 	<LineChart countries={data}></LineChart>
 	<Top10 countries={data} totalConfirmed={totalConfirmed} totalDeaths={totalDeaths}></Top10>
 </div>
 
 <wired-card class="disclaimer-card">
-	<p>Data is from the Novel Coronavirus COVID-19 Data Repository by Johns Hopkins Center for Systems Science and Engineering. It is converted to an easily accessible JSON document and updated daily by <wired-link href="https://pomb.us/" target="_blank">"Pomber"</wired-link> before being analyzed here on the site. Last updated {lastUpdate}.</p>
+	<p>Data comes from the Novel Coronavirus COVID-19 Data Repository by Johns Hopkins Center for Systems Science and Engineering. It updates automatically every day. Last updated {lastUpdate}.</p>
+
+	<wired-button elevation="3" class="source-button">
+		<a class="source-link" href="https://github.com/CSSEGISandData/COVID-19" target="_blank">
+			<svg class="svg-image" role="img" height="40" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub Icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+			<span style="margin-left: 1em; color: #3367d6;">Data Source</span>
+		</a>
+	</wired-button>
+
 	<wired-button elevation="3" class="source-button">
 		<a class="source-link" href="https://github.com/Jappzy/carona-balona" target="_blank">
 			<svg class="svg-image" role="img" height="40" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub Icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-			<span style="margin-left: 1em; color: #3367d6;">View Source</span>
+			<span style="margin-left: 1em; color: #3367d6;">Front-End Source</span>
 		</a>
 	</wired-button>
 </wired-card>
@@ -115,6 +156,19 @@ onMount(async () => {
 	color: white;
 }
 
+.daily-charts {
+	display: grid;
+	grid-gap: 3em;
+	grid-template-columns: 1fr;
+	margin: 10vh 2em 12vh;
+}
+
+@media (min-width: 800px) {
+	.daily-charts {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
 .charts-container {
 	display: flex;
 	justify-content: space-around;
@@ -129,8 +183,7 @@ onMount(async () => {
 }
 
 .source-button {
-	margin: 2em auto 4em;
-	display: block;
+	margin: 2em 1em 4em;
 	width: fit-content;
 }
 
