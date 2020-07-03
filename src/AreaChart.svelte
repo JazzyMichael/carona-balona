@@ -12,7 +12,7 @@
 		{ display: 'Apr', timestamp: 1585713600 },
 		{ display: 'May', timestamp: 1588305600 },
 		{ display: 'June', timestamp: 1590984000 },
-		{ display: 'July', timestamp: 1593483200 }
+		{ display: 'July', timestamp: 1593576000 }
 	]
 	const padding = { top: 20, right: 15, bottom: 20, left: 25 };
 

@@ -4,13 +4,13 @@
 </div>
 
 <style>
-.footer-container {
-	background-color: #fff1f4;
-	display: flex;
-	justify-content: center;
-	padding: 1em;
-	margin: 10vh -8px -8px -8px;
-	border-top: 1px solid #e48f73;
-	color: black;
-}
+	.footer-container {
+		background-color: #fff1f4;
+		display: flex;
+		justify-content: center;
+		padding: 1em;
+		margin: 10vh -8px -8px -8px;
+		border-top: 1px solid #e48f73;
+		color: black;
+	}
 </style>
