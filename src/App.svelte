@@ -20,7 +20,9 @@ let selectedCountry = {
 	dailyCases: [],
 	dailyDeaths: [],
 	casesTicks: [],
-	deathsTicks: []
+	deathsTicks: [],
+	totalCases: 0,
+	totalDeaths: 0
 };
 
 const format = (num = '', str = '') => {
@@ -62,6 +64,9 @@ function selectCountry(name) {
 
 	selectedCountry.casesTicks = [1];
 	selectedCountry.deathsTicks = [1];
+
+	selectedCountry.totalCases = data[name][data[name].length - 1].confirmed;
+	selectedCountry.totalDeaths = data[name][data[name].length - 1].deaths;
 
 	if (highestNewCases < 10000) selectedCountry.casesTicks.push(5000);
 	for (let i = 1; i * 10000 < highestNewCases + 10000; i++) {
@@ -122,17 +127,21 @@ onMount(async () => {
 
 <div class="stat-cards">
 	<wired-card elevation="3" fill="#3367d6" class="stat-card">
-		<span>{format(totalConfirmed, 'Cases')}</span>
+		<h4>{format(totalConfirmed)}</h4>
+		<br>
+		<p>Total Cases</p>
 	</wired-card>
 
 	<wired-card elevation="3" fill="#ea7075" class="stat-card">
-		<span>{format(totalDeaths, 'Deaths')}</span>
+		<h4>{format(totalDeaths)}</h4>
+		<br>
+		<p>Total Deaths</p>
 	</wired-card>
 </div>
 
 <div style="margin-top: 5vh; text-align: center;">
 	{#if data && selectedCountry.name}
-		<select name="country-daily-select" id="country-select" bind:value={selectedCountry.name} on:change={() => selectCountry()}>
+		<select bind:value={selectedCountry.name} on:change={() => selectCountry()} on:blur={() => selectCountry()}>
 			{#each Object.keys(data) as country}
 				<option value={country}>{ country }</option>
 			{/each}
@@ -140,7 +149,14 @@ onMount(async () => {
 	{/if}
 </div>
 
-{#if selectedCountry && selectedCountry.name && selectedCountry.dailyCases && selectedCountry.dailyDeaths}
+{#if selectedCountry && selectedCountry.totalCases && selectedCountry.name && selectedCountry.dailyCases && selectedCountry.dailyDeaths}
+<div class="selected-country-stats">
+	<span style="text-align: right;">{ format(selectedCountry.totalCases) }</span>
+	<span>Cases</span>
+	<span style="text-align: right;">{ format(selectedCountry.totalDeaths) }</span>
+	<span>Deaths ({ (selectedCountry.totalDeaths / selectedCountry.totalCases * 100).toString().substring(0, 3) }%)</span>
+</div>
+
 <div class="daily-charts">
 	<AreaChart title="{selectedCountry.name} Cases per Day" data={selectedCountry.dailyCases} data2={selectedCountry.dailyDeaths} yTicks={selectedCountry.casesTicks}></AreaChart>
 	<AreaChart title="{selectedCountry.name} Deaths per Day" data={selectedCountry.dailyDeaths} yTicks={selectedCountry.deathsTicks}></AreaChart>
@@ -181,10 +197,22 @@ onMount(async () => {
 }
 
 .stat-card {
-	padding: 2em;
+	padding: 1.5em;
 	margin: 0.2em;
 	text-align: center;
 	color: white;
+}
+
+.stat-card > * {
+	margin: 0;
+}
+
+.selected-country-stats {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 1em;
+	max-width: 280px;
+	margin: 1em auto;
 }
 
 .daily-charts {
