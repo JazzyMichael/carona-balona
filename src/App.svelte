@@ -68,9 +68,22 @@ function selectCountry(name) {
 	selectedCountry.totalCases = data[name][data[name].length - 1].confirmed;
 	selectedCountry.totalDeaths = data[name][data[name].length - 1].deaths;
 
-	if (highestNewCases < 10000) selectedCountry.casesTicks.push(5000);
-	for (let i = 1; i * 10000 < highestNewCases + 10000; i++) {
-		selectedCountry.casesTicks.push(i * 10000);
+	if (highestNewCases < 1001) {
+		for (let i = 1; i * 200 < highestNewCases + 200; i++) {
+			selectedCountry.casesTicks.push(i * 200);
+		}
+	} else if (highestNewCases > 1000 && highestNewCases < 10000) {
+		for (let i = 1; i * 1000 < highestNewCases + 1000; i++) {
+			selectedCountry.casesTicks.push(i * 1000);
+		}
+	} else if (highestNewCases > 10000 && highestNewCases < 120000) {
+		for (let i = 1; i * 10000 < highestNewCases + 10000; i++) {
+			selectedCountry.casesTicks.push(i * 10000);
+		}
+	} else {
+		for (let i = 1; i * 100000 < highestNewCases + 100000; i++) {
+			selectedCountry.casesTicks.push(i * 100000);
+		}
 	}
 
 	if (highestNewDeaths < 1000) selectedCountry.deathsTicks.push(500);

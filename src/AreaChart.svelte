@@ -7,13 +7,16 @@
 	export let yTicks;
 
 	const xTicks = [
-		// { display: 'Feb', timestamp: 1580533200 },
 		{ display: 'Mar', timestamp: 1583038800 },
-		{ display: 'Apr', timestamp: 1585713600 },
 		{ display: 'May', timestamp: 1588305600 },
-		{ display: 'June', timestamp: 1590984000 },
-		{ display: 'July', timestamp: 1593576000 }
-	]
+		{ display: 'July', timestamp: 1593576000 },
+		{ display: 'Sept', timestamp: 1598932800 },
+		{ display: 'Nov', timestamp: 1604203200 },
+		{ display: 'Jan', timestamp: 1609477200 },
+		{ display: 'Mar', timestamp: 1614574800 },
+		{ display: 'May', timestamp: 1619841600 }
+	];
+
 	const padding = { top: 20, right: 15, bottom: 20, left: 25 };
 
 	let width = 700;
